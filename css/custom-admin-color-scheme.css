@@ -1,0 +1,4 @@
+/* Add custom styles for your color picker and other elements if necessary */
+.wp-picker-container input[type="text"].wp-color-picker {
+    width: 100%;
+}
