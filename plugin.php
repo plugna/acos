@@ -16,7 +16,7 @@ function custom_admin_color_scheme() {
         'custom_scheme',
         __('Custom Color Scheme', 'custom-admin-color-scheme'),
         plugins_url('custom-admin-color-scheme/css/colors.css', __FILE__),
-        array('#333333', '#0073aa', '#0073aa', '#00a0d2')
+        array('#096484', '#4796b3', '#52accc', '#74B6CE', '#e5f8ff', '#fff', '#fff')
     );
 }
 add_action('admin_init', 'custom_admin_color_scheme');
@@ -46,8 +46,6 @@ function custom_admin_color_scheme_enqueue_scripts($hook) {
 }
 add_action('admin_enqueue_scripts', 'custom_admin_color_scheme_enqueue_scripts');
 
-
-
 function custom_admin_color_scheme_field($user) {
     $color_scheme = get_user_meta($user->ID, 'custom_admin_color_scheme', true);
 
@@ -68,7 +66,7 @@ EOT;
 
     $colors = json_decode($color_scheme, true);
     if (!is_array($colors)) {
-        $colors = array('#333333', '#0073aa', '#0073aa', '#00a0d2');
+        $colors = array('#096484', '#4796b3', '#52accc', '#74B6CE', '#e5f8ff', '#fff', '#fff');
     }
 
     ?>
@@ -76,7 +74,8 @@ EOT;
         <tr id="custom_admin_color_scheme_row">
             <th scope="row">Custom Admin Color Scheme</th>
             <td>
-                <?php for ($i = 1; $i <= 4; $i++) : ?>
+                <?php for ($i = 1; $i <= 7; $i++) : ?>
+                <?php if(!isset($colors[$i - 1])){continue;} ?>
                     <input type="text" class="custom-admin-color-scheme-picker" id="color-<?php echo $i; ?>" value="<?php echo esc_attr($colors[$i - 1]); ?>" />
                 <?php endfor; ?>
                 <input type="button" id="save_custom_admin_color_scheme" class="button button-primary" value="Save Color Scheme" />
@@ -90,33 +89,18 @@ EOT;
 add_action('show_user_profile', 'custom_admin_color_scheme_field');
 add_action('edit_user_profile', 'custom_admin_color_scheme_field');
 
-function custom_admin_color_scheme_dynamic_css() {
-    if (isset($_GET['dynamic-css']) && $_GET['dynamic-css'] === 'custom-admin-color-scheme') {
-        $is_template = isset($_GET['template']) && $_GET['template'] === 'true';
-
-        header('Content-Type: text/css; charset=utf-8');
-        header('Cache-Control: public, max-age=86400');
-
-        $colors = $is_template ? array('$1', '$2', '$3', '$4') : get_custom_colors();
-        echo generate_dynamic_css($colors);
-        exit;
-    }
-}
-add_action('wp_ajax_get_custom_color_scheme_css', 'custom_admin_color_scheme_dynamic_css');
-
-
 
 
 // Save color picker value
-function custom_admin_color_scheme_save_color_picker_fieldold($user_id) {
-    if (!current_user_can('edit_user', $user_id)) {
-        return false;
-    }
-
-    update_user_meta($user_id, 'custom_admin_color_scheme', $_POST['custom_admin_color_scheme']);
-}
-add_action('personal_options_update', 'custom_admin_color_scheme_save_color_picker_field');
-add_action('edit_user_profile_update', 'custom_admin_color_scheme_save_color_picker_field');
+//function custom_admin_color_scheme_save_color_picker_fieldold($user_id) {
+//    if (!current_user_can('edit_user', $user_id)) {
+//        return false;
+//    }
+//
+//    update_user_meta($user_id, 'custom_admin_color_scheme', $_POST['custom_admin_color_scheme']);
+//}
+//add_action('personal_options_update', 'custom_admin_color_scheme_save_color_picker_field');
+//add_action('edit_user_profile_update', 'custom_admin_color_scheme_save_color_picker_field');
 
 function custom_admin_color_scheme_ajax_save() {
     check_ajax_referer('save_custom_admin_color_scheme', 'security');
@@ -139,15 +123,14 @@ add_action('wp_ajax_save_custom_admin_color_scheme', 'custom_admin_color_scheme_
 
 
 function get_custom_colors() {
+//    global $_wp_admin_css_colors;
+//    print_r($_wp_admin_css_colors);die;
     $user_id = get_current_user_id();
     $color_scheme = get_user_meta($user_id, 'custom_admin_color_scheme', true);
-    $colors = json_decode($color_scheme, true);
-
-    if (!is_array($colors) || count($colors) != 4) {
-        $colors = array('#333333', '#0073aa', '#0073aa', '#00a0d2');
+    if(!$color_scheme) {
+        return null;
     }
-
-    return $colors;
+    return json_decode($color_scheme, true);;
 }
 
 function replace_default_color_scheme() {
@@ -157,26 +140,28 @@ function replace_default_color_scheme() {
         'custom_scheme',
         __('Custom Color Scheme', 'custom-admin-color-scheme'),
         '',
-        $colors
+        array_slice($colors, 0,4),
+        array_slice($colors, 4)
+
     );
 }
 add_action('admin_init', 'replace_default_color_scheme');
 
-function custom_admin_color_scheme_ajax_get_css() {
-
-    check_ajax_referer('save_custom_admin_color_scheme', 'security');
-    $colors = json_decode(sanitize_text_field($_POST['colors']));
-    print_r($colors);die;
-
-    if (!is_array($colors) || count($colors) != 4) {
-        wp_send_json_error('Invalid colors');
-    } else {
-        require_once(plugin_dir_path(__FILE__) . 'dynamic-css.php');
-        $css = generate_custom_color_scheme_css($colors);
-
-        echo $css;die;
-        wp_send_json_success($css);
-    }
-}
-add_action('wp_ajax_get_custom_color_scheme_css', 'custom_admin_color_scheme_ajax_get_css');
+//function custom_admin_color_scheme_ajax_get_css() {
+//
+//    check_ajax_referer('save_custom_admin_color_scheme', 'security');
+//    $colors = json_decode(sanitize_text_field($_POST['colors']));
+//    print_r($colors);die;
+//
+//    if (!is_array($colors) || count($colors) != 4) {
+//        wp_send_json_error('Invalid colors');
+//    } else {
+//        require_once(plugin_dir_path(__FILE__) . 'dynamic-css.php');
+//        $css = generate_custom_color_scheme_css($colors);
+//
+//        echo $css;die;
+//        wp_send_json_success($css);
+//    }
+//}
+//add_action('wp_ajax_get_custom_color_scheme_css', 'custom_admin_color_scheme_ajax_get_css');
 

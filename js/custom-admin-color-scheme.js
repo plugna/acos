@@ -6,7 +6,7 @@ jQuery(document).ready(function ($) {
         $('.custom-admin-color-scheme-picker').each(function() {
             colors.push($(this).wpColorPicker('color'));
         });
-
+//console.log('colors', colors);
         if (templateCss) {
             var css = templateCss;
 
@@ -71,6 +71,9 @@ jQuery(document).ready(function ($) {
             $('#color-2').val(),
             $('#color-3').val(),
             $('#color-4').val(),
+            $('#color-5').val(),
+            $('#color-6').val(),
+            $('#color-7').val(),
         ]);
 
         $.ajax({
