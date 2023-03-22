@@ -9,3 +9,11 @@
     transform: translateY(4px);
     display: inline-block;
 }
+
+body.cacos-enabled .form-table .user-admin-color-wrap{
+    display: none;
+}
+body:not(.cacos-enabled) #custom_admin_color_scheme_row .wp-picker-container,
+body:not(.cacos-enabled) #custom_admin_color_scheme_row .button{
+    display: none;
+}

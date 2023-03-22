@@ -35,12 +35,12 @@ class CACOS
 // Register Custom Admin Color Scheme
     public function register_color_scheme()
     {
-        wp_admin_css_color(
-            $this->color_scheme_handle,
-            __($this->color_scheme_name, 'custom-admin-color-scheme'),
-            plugins_url('custom-admin-color-scheme/css/colors.css', __FILE__),
-            $this->get_default_colors()
-        );
+//        wp_admin_css_color(
+//            $this->color_scheme_handle,
+//            __($this->color_scheme_name, 'custom-admin-color-scheme'),
+//            plugins_url('custom-admin-color-scheme/css/colors.css', __FILE__),
+//            $this->get_default_colors()
+//        );
     }
 
     public function enqueue_scripts($hook)
@@ -62,19 +62,42 @@ class CACOS
     public function add_color_scheme_field($user)
     {
         $color_scheme = get_user_meta($user->ID, $this->colors_meta_key, true);
+        $has_custom_scheme = !empty($color_scheme);
 
-// JavaScript code to move the custom color scheme section
         $js = <<<EOT
-      <script>
-      (function($) {
-          $(document).ready(function() {
-              const customColorRow = $('#custom_admin_color_scheme_row');
-              const adminColorRow = $('input[name=admin_color]').closest('tr');
-              customColorRow.insertAfter(adminColorRow);
-          });
-      })(jQuery);
-      </script>
-EOT;
+        <script>
+        (function($) {
+            $(document).ready(function() {
+                console.log('ready');
+                const customColorRow = $('#custom_admin_color_scheme_row');
+                const adminColorRow = $('tr.user-admin-color-wrap');
+                customColorRow.insertAfter(adminColorRow);
+                
+                const checkbox = $('#enable_cacos');
+                const colorSchemeTable = $('#custom_admin_color_scheme_row').closest('.form-table');
+                const isCustomSchemeEnabled = checkbox.prop('checked');
+                
+                if (isCustomSchemeEnabled) {
+                    //colorSchemeTable.show();
+                    $('body').addClass('cacos-enabled');
+                } else {
+                    //colorSchemeTable.hide();
+                    $('body').removeClass('cacos-enabled');
+                }
+
+                checkbox.on('change', function() {
+                    if (this.checked) {
+                        //colorSchemeTable.show();
+                        $('body').addClass('cacos-enabled');
+                    } else {
+                        //colorSchemeTable.hide();
+                        $('body').removeClass('cacos-enabled');
+                    }
+                });
+            });
+        })(jQuery);
+        </script>
+    EOT;
 
         echo $js;
 
@@ -85,11 +108,16 @@ EOT;
 
         ?>
         <table class="form-table" style="display:none;">
-            <tr id="custom_admin_color_scheme_row">
+            <tr id="custom_admin_color_scheme_row" class="custom-admin-color-scheme-section">
                 <th scope="row">Custom Admin Color Scheme</th>
                 <td>
                     <label for="enable_cacos" id="enable_cacos_label">
-                        <input type="checkbox" name="comment_shortcuts" id="enable_cacos" value="true">
+                        <input
+                                type="checkbox"
+                                id="enable_cacos"
+                                class="custom-admin-color-scheme-toggle"
+                                <?php echo $has_custom_scheme ? 'checked="checked"' : ''; ?>
+                                value="true">
                         Enable
                     </label>&nbsp;
                     <?php for ($i = 1; $i <= 7; $i++) : ?>
@@ -106,6 +134,7 @@ EOT;
         </table>
         <?php
     }
+
 
     public function save_color_scheme()
     {
@@ -146,7 +175,7 @@ EOT;
         $color_scheme = get_user_meta($user_id, $this->colors_meta_key, true);
 
         if (!$color_scheme) {
-            return null;
+            return [];
         }
 
         return json_decode($color_scheme, true);

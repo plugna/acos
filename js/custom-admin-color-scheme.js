@@ -1,12 +1,13 @@
 jQuery(document).ready(function ($) {
     var templateCss = '';
+    var $cacosTable = $('#custom_admin_color_scheme_row').closest('.form-table');
 
     function applyColorSchemePreview() {
         var colors = [];
         $('.custom-admin-color-scheme-picker').each(function() {
             colors.push($(this).wpColorPicker('color'));
         });
-//console.log('colors', colors);
+
         if (templateCss) {
             var css = templateCss;
 
@@ -31,35 +32,20 @@ jQuery(document).ready(function ($) {
     });
 
     fetchTemplateCss();
-    // Initialize color picker for each input
-    // $('.custom-admin-color-scheme-picker').wpColorPicker({
-    //     change: function(event, ui) {
-    //         var colors = [];
-    //         $('.custom-admin-color-scheme-picker').each(function() {
-    //             colors.push($(this).wpColorPicker('color'));
-    //         });
+
+    // Initialize the "Enable" checkbox
+    // var $enableCacos = $('#enable_cacos');
+    // var isCacosEnabled = $enableCacos.is(':checked');
     //
-    //         $.ajax({
-    //             url: custom_admin_color_scheme_data.ajax_url,
-    //             type: 'POST',
-    //             data: {
-    //                 action: 'get_custom_color_scheme_css',
-    //                 security: custom_admin_color_scheme_data.security,
-    //                 colors: JSON.stringify(colors),
-    //             },
-    //             success: function(response) {
-    //                 if (response.success) {
-    //                     $('#custom-color-scheme-preview').remove();
-    //                     $('head').append('<style id="custom-color-scheme-preview">' + response.data + '</style>');
-    //                 } else {
-    //                     console.error('Error fetching custom color scheme CSS:', response.data);
-    //                 }
-    //             },
-    //             error: function(xhr, status, error) {
-    //                 console.error('AJAX error:', error);
-    //             },
-    //         });
-    //     },
+    // $cacosTable.toggle(!isCacosEnabled);
+    //
+    // $('body').toggleClass('cacos-enabled', isCacosEnabled);
+
+    // Show/hide the custom color scheme section based on the "Enable" checkbox
+    // $enableCacos.on('change', function() {
+    //     var isCacosEnabled = $(this).is(':checked');
+    //     $cacosTable.toggle(!isCacosEnabled);
+    //     $('body').toggleClass('cacos-enabled', isCacosEnabled);
     // });
 
     // Save the color scheme
