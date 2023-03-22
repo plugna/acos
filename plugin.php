@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Custom Admin Color Scheme
+Plugin Name: CACOS - Custom Admin Color Scheme
 Plugin URI: https://github.com/plugna/cacos
 Description: Adds a custom color scheme to the user profile section in the "Admin Color Scheme" section.
 Version: 1.0
@@ -81,42 +81,6 @@ class CACOS
     {
         $color_scheme = get_user_meta($user->ID, self::$colors_meta_key, true);
         $has_custom_scheme = !empty($color_scheme);
-
-        $js = <<<EOT
-        <script>
-        (function($) {
-            $(document).ready(function() {
-                const customColorRow = $('#cacos-row');
-                const adminColorRow = $('tr.user-admin-color-wrap');
-                customColorRow.insertAfter(adminColorRow);
-                
-                const checkbox = $('#enable_cacos');
-                const colorSchemeTable = $('#cacos-row').closest('.form-table');
-                const isCustomSchemeEnabled = checkbox.prop('checked');
-                
-                if (isCustomSchemeEnabled) {
-                    //colorSchemeTable.show();
-                    $('body').addClass('cacos-enabled');
-                } else {
-                    //colorSchemeTable.hide();
-                    $('body').removeClass('cacos-enabled');
-                }
-
-                checkbox.on('change', function() {
-                    if (this.checked) {
-                        //colorSchemeTable.show();
-                        $('body').addClass('cacos-enabled');
-                    } else {
-                        //colorSchemeTable.hide();
-                        $('body').removeClass('cacos-enabled');
-                    }
-                });
-            });
-        })(jQuery);
-        </script>
-    EOT;
-
-        echo $js;
 
         $colors = json_decode($color_scheme, true);
         if (!is_array($colors)) {
