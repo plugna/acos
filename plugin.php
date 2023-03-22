@@ -10,52 +10,61 @@ License: GPLv2 or later
 Text Domain: custom-admin-color-scheme
 */
 
-class CACOS {
-private $colors_meta_key = 'custom_admin_color_scheme';
-private $version_meta_key = 'custom_admin_color_scheme_version';
-private $nonce_action = 'save_custom_admin_color_scheme';
-private $color_scheme_handle = 'custom_scheme';
-private $color_scheme_name = 'Custom Color Scheme';
+class CACOS
+{
+    private $colors_meta_key = 'custom_admin_color_scheme';
+    private $version_meta_key = 'custom_admin_color_scheme_version';
+    private $nonce_action = 'save_custom_admin_color_scheme';
+    private $color_scheme_handle = 'custom_scheme';
+    private $color_scheme_name = 'Custom Color Scheme';
 
-public function __construct() {
-    add_action('admin_init', array($this, 'register_color_scheme'));
-    add_action('admin_enqueue_scripts', array($this, 'enqueue_scripts'));
-    add_action('show_user_profile', array($this, 'add_color_scheme_field'));
-    add_action('edit_user_profile', array($this, 'add_color_scheme_field'));
-    add_action('wp_ajax_save_custom_admin_color_scheme', array($this, 'save_color_scheme'));
-    add_action('admin_init', array($this, 'replace_default_color_scheme'));
-}
+    public function __construct()
+    {
+        add_action('admin_init', array($this, 'register_color_scheme'));
+        add_action('admin_enqueue_scripts', array($this, 'enqueue_scripts'));
+        add_action('show_user_profile', array($this, 'add_color_scheme_field'));
+        add_action('edit_user_profile', array($this, 'add_color_scheme_field'));
+        add_action('wp_ajax_save_custom_admin_color_scheme', array($this, 'save_color_scheme'));
+        add_action('admin_init', array($this, 'replace_default_color_scheme'));
+    }
+
+    public function get_default_colors(){
+        return array('#096484', '#4796b3', '#52accc', '#74B6CE', '#e5f8ff', '#fff', '#fff');
+    }
 
 // Register Custom Admin Color Scheme
-public function register_color_scheme() {
-    wp_admin_css_color(
-        $this->color_scheme_handle,
-        __($this->color_scheme_name, 'custom-admin-color-scheme'),
-        plugins_url('custom-admin-color-scheme/css/colors.css', __FILE__),
-        array('#096484', '#4796b3', '#52accc', '#74B6CE', '#e5f8ff', '#fff', '#fff')
-    );
-}
+    public function register_color_scheme()
+    {
+        wp_admin_css_color(
+            $this->color_scheme_handle,
+            __($this->color_scheme_name, 'custom-admin-color-scheme'),
+            plugins_url('custom-admin-color-scheme/css/colors.css', __FILE__),
+            $this->get_default_colors()
+        );
+    }
 
-public function enqueue_scripts($hook) {
-    if ('profile.php' !== $hook) return;
+    public function enqueue_scripts($hook)
+    {
+        if ('profile.php' !== $hook) return;
 
-    wp_enqueue_style('wp-color-picker');
-    wp_enqueue_style('custom-admin-color-scheme', plugin_dir_url(__FILE__) . 'css/custom-admin-color-scheme.css');
+        wp_enqueue_style('wp-color-picker');
+        wp_enqueue_style('custom-admin-color-scheme', plugin_dir_url(__FILE__) . 'css/custom-admin-color-scheme.css');
 
-    wp_enqueue_script('wp-color-picker');
-    wp_enqueue_script('custom-admin-color-scheme', plugin_dir_url(__FILE__) . 'js/custom-admin-color-scheme.js', array('jquery', 'wp-color-picker'), '', true);
+        wp_enqueue_script('wp-color-picker');
+        wp_enqueue_script('custom-admin-color-scheme', plugin_dir_url(__FILE__) . 'js/custom-admin-color-scheme.js', array('jquery', 'wp-color-picker'), '', true);
 
-    wp_localize_script('custom-admin-color-scheme', 'custom_admin_color_scheme_data', array(
-        'security' => wp_create_nonce($this->nonce_action),
-        'plugin_url' => plugin_dir_url(__FILE__),
-    ));
-}
+        wp_localize_script('custom-admin-color-scheme', 'custom_admin_color_scheme_data', array(
+            'security' => wp_create_nonce($this->nonce_action),
+            'plugin_url' => plugin_dir_url(__FILE__),
+        ));
+    }
 
-public function add_color_scheme_field($user) {
-$color_scheme = get_user_meta($user->ID, $this->colors_meta_key, true);
+    public function add_color_scheme_field($user)
+    {
+        $color_scheme = get_user_meta($user->ID, $this->colors_meta_key, true);
 
 // JavaScript code to move the custom color scheme section
-$js = <<<EOT
+        $js = <<<EOT
       <script>
       (function($) {
           $(document).ready(function() {
@@ -67,28 +76,36 @@ $js = <<<EOT
       </script>
 EOT;
 
-echo $js;
+        echo $js;
 
-$colors = json_decode($color_scheme, true);
-if (!is_array($colors)) {
-    $colors = array('#096484', '#4796b3', '#52accc', '#74B6CE', '#e5f8ff', '#fff', '#fff');
-}
+        $colors = json_decode($color_scheme, true);
+        if (!is_array($colors)) {
+            $colors = $this->get_default_colors();
+        }
 
-?>
-<table class="form-table" style="display:none;">
-    <tr id="custom_admin_color_scheme_row">
-        <th scope="row">Custom Admin Color Scheme</th>
-        <td>
-            <?php for ($i = 1; $i <= 7; $i++) : ?>
-                <?php if(!isset($colors[$i - 1])){continue;} ?>
-                <input type="text" class="custom-admin-color-scheme-picker" id="color-<?php echo $i; ?>" value="<?php echo esc_attr($colors[$i - 1]); ?>" />
-            <?php endfor; ?>
-            <input type="button" id="save_custom_admin_color_scheme" class="button button-primary" value="Save Color Scheme" />
-        </td>
-    </tr>
-</table>
-    <?php
-}
+        ?>
+        <table class="form-table" style="display:none;">
+            <tr id="custom_admin_color_scheme_row">
+                <th scope="row">Custom Admin Color Scheme</th>
+                <td>
+                    <label for="enable_cacos" id="enable_cacos_label">
+                        <input type="checkbox" name="comment_shortcuts" id="enable_cacos" value="true">
+                        Enable
+                    </label>&nbsp;
+                    <?php for ($i = 1; $i <= 7; $i++) : ?>
+                        <?php if (!isset($colors[$i - 1])) {
+                            continue;
+                        } ?>
+                        <input type="text" class="custom-admin-color-scheme-picker" id="color-<?php echo $i; ?>"
+                               value="<?php echo esc_attr($colors[$i - 1]); ?>"/>
+                    <?php endfor; ?>
+                    <input type="button" id="save_custom_admin_color_scheme" class="button button-primary"
+                           value="Save Color Scheme"/>
+                </td>
+            </tr>
+        </table>
+        <?php
+    }
 
     public function save_color_scheme()
     {
@@ -117,7 +134,7 @@ if (!is_array($colors)) {
             $this->color_scheme_handle,
             __($this->color_scheme_name, 'custom-admin-color-scheme'),
             '',
-            array_slice($colors, 0,4),
+            array_slice($colors, 0, 4),
             array_slice($colors, 4)
         );
 
@@ -128,7 +145,7 @@ if (!is_array($colors)) {
         $user_id = get_current_user_id();
         $color_scheme = get_user_meta($user_id, $this->colors_meta_key, true);
 
-        if(!$color_scheme) {
+        if (!$color_scheme) {
             return null;
         }
 
