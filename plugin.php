@@ -10,7 +10,7 @@
     Text Domain: acos
 */
 
-class ACOS
+class ACOS_Plugin
 {
     private static $colors_meta_key = 'acos_colors';
     private static $version_meta_key = 'acos_version';
@@ -165,4 +165,4 @@ class ACOS
 
 }
 
-new ACOS();
+new ACOS_Plugin();

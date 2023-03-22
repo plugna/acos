@@ -7,7 +7,6 @@
         customColorRow.insertAfter(adminColorRow);
 
         var checkbox = $('#enable_acos');
-        //var colorSchemeTable = $('#acos-row').closest('.form-table');
         var isCustomSchemeEnabled = checkbox.prop('checked');
 
         function applyColorSchemePreview() {
@@ -31,36 +30,22 @@
         function fetchTemplateCss() {
             $.get(acos_data.plugin_url + '/dynamic-css.php?&template=true&v=1', function(data) {
                 templateCss = data;
+                if($('#enable_acos:checked').length){
+                    applyColorSchemePreview();
+                }
             });
         }
 
-        $('.acos-picker').wpColorPicker({
+        $(".acos-picker").wpColorPicker({
             change: applyColorSchemePreview,
         });
 
         fetchTemplateCss();
 
-        if($('#enable_acos:checked').length){
-            applyColorSchemePreview();
-        }
-
-
-        if (isCustomSchemeEnabled) {
-            //colorSchemeTable.show();
-            $('body').addClass('acos-enabled');
-        } else {
-            //colorSchemeTable.hide();
-            $('body').removeClass('acos-enabled');
-        }
+        $("body").toggleClass('acos-enabled', isCustomSchemeEnabled);
 
         checkbox.on('change', function() {
-            if (this.checked) {
-                //colorSchemeTable.show();
-                $('body').addClass('acos-enabled');
-            } else {
-                //colorSchemeTable.hide();
-                $('body').removeClass('acos-enabled');
-            }
+            $("body").toggleClass('acos-enabled', this.checked);
         });
     });
 })(jQuery);

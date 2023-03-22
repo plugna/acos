@@ -22,6 +22,14 @@ Upload the ZIP file to your WordPress site using the plugin uploader (Plugins > 
 Activate the plugin from the Plugins page.
 Alternatively, you can also install the plugin manually by downloading the ZIP file, extracting it, and uploading the extracted folder to the /wp-content/plugins/ directory of your WordPress site.
 
+== How To Use? ==
+
+1. In the admin dashboard go to User > Profile
+2. Locate "Custom Admin Color Scheme" checkbox
+3. Check the checkbox to enable custom color scheme
+4. Change the colors with color picker
+5. Click on "Update Profile" button to apply the changes
+
 == Contribute ==
 If you would like to contribute to the development of ACOS, you can find the project on GitHub. We welcome any contributions, whether it's reporting a bug, suggesting a new feature, or submitting a pull request. We reserve the right to reject any pull requests that do not comply with the coding standards and our business goals.
 
