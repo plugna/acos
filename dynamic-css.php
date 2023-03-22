@@ -29,7 +29,6 @@ foreach ($color_replacements as $search => $replace) {
 }
 
 header('Content-Type: text/css; charset=utf-8');
-header('Cache-Control: public, max-age=86400');
-//echo $css;
-echo wp_kses_post($css);
+header('Cache-Control: public, max-age=31536000'); // 1 year cache
 
+echo wp_kses_post($css);

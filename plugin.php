@@ -2,7 +2,7 @@
 /*
     Plugin Name: ACOS - Custom Admin Color Scheme
     Plugin URI: https://github.com/plugna/acos
-    Description: Adds a custom color scheme to the user profile section in the "Admin Color Scheme" section.
+    Description: Adds a custom color scheme to the user profile section below the default admin color schemes.
     Version: 1.0
     Author: Plugna
     Author URI: https://plugna.com/
@@ -25,8 +25,6 @@ class ACOS_Plugin
         add_action('admin_enqueue_scripts', array($this, 'enqueue_dynamic_script'), 100);
         add_action('personal_options_update', array($this, 'save_color_scheme')); //on update
         add_action('edit_user_profile_update', array($this, 'save_color_scheme')); //on update
-
-        //add_action('init', array($this, 'add_rewrite_rules'));
     }
 
     /**
@@ -157,11 +155,6 @@ class ACOS_Plugin
 
         return json_decode($color_scheme, true);
     }
-
-    //TODO: Use rewrite rules later
-//    public function add_rewrite_rules() {
-//        add_rewrite_rule('^acos.css$', __FILE__ .'dynamic-css.php', 'top');
-//    }
 
 }
 

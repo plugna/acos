@@ -23,7 +23,6 @@ Activate the plugin from the Plugins page.
 Alternatively, you can also install the plugin manually by downloading the ZIP file, extracting it, and uploading the extracted folder to the /wp-content/plugins/ directory of your WordPress site.
 
 == How To Use? ==
-
 1. In the admin dashboard go to User > Profile
 2. Locate "Custom Admin Color Scheme" checkbox
 3. Check the checkbox to enable custom color scheme
@@ -43,7 +42,9 @@ ACOS is distributed under the GPLv2 or later license.
 
 We would like to thank the WordPress community and its contributors for their invaluable work in creating and maintaining the WordPress platform.
 
+== Changelog ==
+
+= 1.0 =
+* Initial Version
 
 [SEE ALL LOGS](https://plugins.svn.wordpress.org/acos/trunk/changelog.txt)
-
-{CHANGE_LOG}
