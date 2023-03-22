@@ -2,17 +2,17 @@
     $(document).ready(function() {
 
         var templateCss = '';
-        var customColorRow = $('#cacos-row');
+        var customColorRow = $('#acos-row');
         var adminColorRow = $('tr.user-admin-color-wrap');
         customColorRow.insertAfter(adminColorRow);
 
-        var checkbox = $('#enable_cacos');
-        //var colorSchemeTable = $('#cacos-row').closest('.form-table');
+        var checkbox = $('#enable_acos');
+        //var colorSchemeTable = $('#acos-row').closest('.form-table');
         var isCustomSchemeEnabled = checkbox.prop('checked');
 
         function applyColorSchemePreview() {
             var colors = [];
-            $('.cacos-picker').each(function() {
+            $('.acos-picker').each(function() {
                 colors.push($(this).wpColorPicker('color'));
             });
 
@@ -29,37 +29,37 @@
         }
 
         function fetchTemplateCss() {
-            $.get(cacos_data.plugin_url + '/dynamic-css.php?&template=true&v=1', function(data) {
+            $.get(acos_data.plugin_url + '/dynamic-css.php?&template=true&v=1', function(data) {
                 templateCss = data;
             });
         }
 
-        $('.cacos-picker').wpColorPicker({
+        $('.acos-picker').wpColorPicker({
             change: applyColorSchemePreview,
         });
 
         fetchTemplateCss();
 
-        if($('#enable_cacos:checked').length){
+        if($('#enable_acos:checked').length){
             applyColorSchemePreview();
         }
 
 
         if (isCustomSchemeEnabled) {
             //colorSchemeTable.show();
-            $('body').addClass('cacos-enabled');
+            $('body').addClass('acos-enabled');
         } else {
             //colorSchemeTable.hide();
-            $('body').removeClass('cacos-enabled');
+            $('body').removeClass('acos-enabled');
         }
 
         checkbox.on('change', function() {
             if (this.checked) {
                 //colorSchemeTable.show();
-                $('body').addClass('cacos-enabled');
+                $('body').addClass('acos-enabled');
             } else {
                 //colorSchemeTable.hide();
-                $('body').removeClass('cacos-enabled');
+                $('body').removeClass('acos-enabled');
             }
         });
     });

@@ -1,0 +1,8 @@
+# ACOS
+
+**ACOS** is a WordPress plugin that allows you to change the admin color scheme of your WordPress dashboard.
+
+Download the latest version from the [WordPress Plugin Directory](https://wordpress.org/plugins/admin-color-scheme/).
+
+### Disclaimer
+Use at your own risk. This plugin is provided as-is, without any warranty or guarantee of its functionality or effectiveness. While we have made every effort to ensure that this plugin is safe and reliable, we cannot be held responsible for any damages or losses caused by its use. Please use this plugin at your own discretion and responsibility.

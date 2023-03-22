@@ -4,15 +4,15 @@
 .wp-picker-container button .wp-color-result-text {
     display: none;
 }
-#enable_cacos_label{
+#enable_acos_label{
     transform: translateY(4px);
     display: inline-block;
 }
 
-body.cacos-enabled .form-table .user-admin-color-wrap{
+body.acos-enabled .form-table .user-admin-color-wrap{
     display: none;
 }
-body:not(.cacos-enabled) #cacos-row .wp-picker-container,
-body:not(.cacos-enabled) #cacos-row .button{
+body:not(.acos-enabled) #acos-row .wp-picker-container,
+body:not(.acos-enabled) #acos-row .button{
     display: none;
 }

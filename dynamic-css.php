@@ -1,9 +1,10 @@
 <?php
+
 require_once('../../../wp-load.php');
 
 $is_template = isset($_GET['template']) && $_GET['template'] === 'true';
 
-$colors = CACOS::get_custom_colors();
+$colors = ACOS::get_custom_colors();
 
 if(empty($colors)){
     exit;
@@ -15,7 +16,7 @@ if($is_template){
 
 $color_replacements = [];
 $counter = 0;
-$default_colors = CACOS::get_default_colors();
+$default_colors = ACOS::get_default_colors();
 
 foreach ((array) $default_colors as $dc) {
     $color_replacements[$dc] = $colors[$counter];
@@ -37,7 +38,7 @@ echo $css;
 //
 //    $is_template = isset($_GET['template']) && $_GET['template'] === 'true';
 //
-//    $colors = CACOS::get_custom_colors();
+//    $colors = ACOS::get_custom_colors();
 //
 //    if(empty($colors)){
 //        exit;
@@ -49,7 +50,7 @@ echo $css;
 //
 //    $color_replacements = [];
 //    $counter = 0;
-//    $default_colors = CACOS::get_default_colors();
+//    $default_colors = ACOS::get_default_colors();
 //
 //    foreach ((array) $default_colors as $dc) {
 //        $color_replacements[$dc] = $colors[$counter];
@@ -71,6 +72,6 @@ echo $css;
 //
 //header('Content-Type: text/css; charset=utf-8');
 //header('Cache-Control: public, max-age=86400');
-//echo cacos_generate_custom_scheme(CACOS::get_custom_colors());
+//echo acos_generate_custom_scheme(ACOS::get_custom_colors());
 
 

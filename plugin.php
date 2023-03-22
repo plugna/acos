@@ -1,29 +1,32 @@
 <?php
 /*
-Plugin Name: CACOS - Custom Admin Color Scheme
-Plugin URI: https://github.com/plugna/cacos
-Description: Adds a custom color scheme to the user profile section in the "Admin Color Scheme" section.
-Version: 1.0
-Author: Plugna
-Author URI: https://plugna.com/
-License: GPLv2 or later
-Text Domain: cacos
+    Plugin Name: ACOS - Custom Admin Color Scheme
+    Plugin URI: https://github.com/plugna/acos
+    Description: Adds a custom color scheme to the user profile section in the "Admin Color Scheme" section.
+    Version: 1.0
+    Author: Plugna
+    Author URI: https://plugna.com/
+    License: GPLv2 or later
+    Text Domain: acos
 */
 
-class CACOS
+class ACOS
 {
-    private static $colors_meta_key = 'cacos_colors';
-    private static $version_meta_key = 'cacos_version';
-    private static $nonce_action = 'cacos_nonce';
+    private static $colors_meta_key = 'acos_colors';
+    private static $version_meta_key = 'acos_version';
+    private static $nonce_action = 'acos_nonce';
 
     public function __construct()
     {
         add_action('admin_enqueue_scripts', array($this, 'enqueue_scripts'));
         add_action('show_user_profile', array($this, 'add_color_scheme_field'));
         add_action('edit_user_profile', array($this, 'add_color_scheme_field'));
+        //add_action('wp_enqueue_scripts', array($this, 'enqueue_dynamic_script'), 100);
         add_action('admin_enqueue_scripts', array($this, 'enqueue_dynamic_script'), 100);
         add_action('personal_options_update', array($this, 'save_color_scheme')); //on update
         add_action('edit_user_profile_update', array($this, 'save_color_scheme')); //on update
+
+        //add_action('init', array($this, 'add_rewrite_rules'));
     }
 
     /**
@@ -48,7 +51,7 @@ class CACOS
 
     public function enqueue_dynamic_script()
     {
-        if (!is_admin() || !is_user_logged_in()) {
+        if (!is_user_logged_in()) {
             return;
         }
 
@@ -56,7 +59,7 @@ class CACOS
         if (!empty($userId)) {
             $version = get_user_meta($userId, self::$version_meta_key, true);
             if (!empty($version)) {
-                wp_enqueue_style('cacos-dynamic', plugin_dir_url(__FILE__) . 'dynamic-css.php', array(), $userId . '-' . $version);
+                wp_enqueue_style('acos-dynamic', plugin_dir_url(__FILE__) . 'dynamic-css.php', array(), $userId . '-' . $version);
             }
         }
     }
@@ -66,12 +69,12 @@ class CACOS
         if ('profile.php' !== $hook && 'user-edit.php' !== $hook) return;
 
         wp_enqueue_style('wp-color-picker');
-        wp_enqueue_style('cacos', plugin_dir_url(__FILE__) . 'css/cacos.css');
+        wp_enqueue_style('acos', plugin_dir_url(__FILE__) . 'css/acos.css');
 
         wp_enqueue_script('wp-color-picker');
-        wp_enqueue_script('cacos', plugin_dir_url(__FILE__) . 'js/cacos.js', array('jquery', 'wp-color-picker'), '', true);
+        wp_enqueue_script('acos', plugin_dir_url(__FILE__) . 'js/acos.js', array('jquery', 'wp-color-picker'), '', true);
 
-        wp_localize_script('cacos', 'cacos_data', array(
+        wp_localize_script('acos', 'acos_data', array(
             'security' => wp_create_nonce(self::$nonce_action),
             'plugin_url' => plugin_dir_url(__FILE__),
         ));
@@ -89,15 +92,15 @@ class CACOS
 
         ?>
         <table class="form-table" style="display:none;">
-            <tr id="cacos-row" class="cacos-section">
+            <tr id="acos-row" class="acos-section">
                 <th scope="row">Custom Admin Color Scheme</th>
                 <td>
-                    <label for="enable_cacos" id="enable_cacos_label">
+                    <label for="enable_acos" id="enable_acos_label">
                         <input
                                 type="checkbox"
-                                id="enable_cacos"
-                                name="enable_cacos"
-                                class="cacos-toggle"
+                                id="enable_acos"
+                                name="enable_acos"
+                                class="acos-toggle"
                             <?php echo $has_custom_scheme ? 'checked="checked"' : ''; ?>
                                 value="true">
                         Enable
@@ -107,9 +110,9 @@ class CACOS
                             continue;
                         } ?>
                         <input type="text"
-                               class="cacos-picker"
-                               id="cacos_color_<?php echo $i; ?>"
-                               name="cacos_color_<?php echo $i; ?>"
+                               class="acos-picker"
+                               id="acos_color_<?php echo esc_attr($i); ?>"
+                               name="acos_color_<?php echo esc_attr($i); ?>"
                                value="<?php echo esc_attr($colors[$i - 1]); ?>"/>
                     <?php endfor; ?>
                 </td>
@@ -121,10 +124,10 @@ class CACOS
 
     public function save_color_scheme($user_id)
     {
-        if (isset($_POST['cacos_color_1'])) {
+        if (isset($_POST['acos_color_1'])) {
             $color_scheme = array();
             for ($i = 1; $i <= 7; $i++) {
-                $color_scheme[] = sanitize_text_field($_POST['cacos_color_' . $i]);
+                $color_scheme[] = sanitize_text_field($_POST['acos_color_' . $i]);
             }
             $color_scheme = json_encode($color_scheme);
         }
@@ -132,10 +135,10 @@ class CACOS
         if ($user_id) {
 
             // Increment the version number
-            $css_version = (int)get_user_meta($user_id, self::$version_meta_key, true);
+            $css_version = (int) get_user_meta($user_id, self::$version_meta_key, true);
             update_user_meta($user_id, self::$version_meta_key, $css_version + 1);
 
-            if (isset($_POST['enable_cacos']) && $_POST['enable_cacos'] == 'true') {
+            if (isset($_POST['enable_acos']) && $_POST['enable_acos'] == 'true') {
                 update_user_meta($user_id, self::$colors_meta_key, $color_scheme);
             } else {
                 delete_user_meta($user_id, self::$colors_meta_key);
@@ -154,6 +157,12 @@ class CACOS
 
         return json_decode($color_scheme, true);
     }
+
+    //TODO: Use rewrite rules later
+//    public function add_rewrite_rules() {
+//        add_rewrite_rule('^acos.css$', __FILE__ .'dynamic-css.php', 'top');
+//    }
+
 }
 
-new CACOS();
+new ACOS();
