@@ -44,6 +44,10 @@ We would like to thank the WordPress community and its contributors for their in
 
 == Changelog ==
 
+= 1.1 =
+* Fixed dynamic CSS location
+* Added versions to scripts and styles
+
 = 1.0 =
 * Initial Version
 

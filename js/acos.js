@@ -28,7 +28,7 @@
         }
 
         function fetchTemplateCss() {
-            $.get(acos_data.plugin_url + '/dynamic-css.php?&template=true&v=1', function(data) {
+            $.get(acos_data.acos_css_template_url, function(data) {
                 templateCss = data;
                 if($('#enable_acos:checked').length){
                     applyColorSchemePreview();
