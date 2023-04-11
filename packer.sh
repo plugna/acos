@@ -57,5 +57,5 @@ replace_in_readme "ACOS_VERSION"
 replace_in_plugin "ACOS_VERSION"
 
 #Copy new files to SVN repo
-rsync -av \
-$DESDIR/files/* ~/projects/acos-svn/trunk
+#rsync -av \
+#$DESDIR/files/* ~/projects/acos-svn/trunk
