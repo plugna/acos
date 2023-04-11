@@ -42,6 +42,9 @@ ACOS is distributed under the GPLv2 or later license.
 
 We would like to thank the WordPress community and its contributors for their invaluable work in creating and maintaining the WordPress platform.
 
+== Future TODOs ==
+* Add option for enabling CSS style of the admin bar on the front end.
+
 == Changelog ==
 
 = 1.2 =
@@ -54,4 +57,4 @@ We would like to thank the WordPress community and its contributors for their in
 = 1.0 =
 * Initial Version
 
-[SEE ALL LOGS](https://plugins.svn.wordpress.org/acos/trunk/changelog.txt)
+[SEE ALL LOGS](https://plugins.svn.wordpress.org/admin-color-scheme/trunk/changelog.txt)
