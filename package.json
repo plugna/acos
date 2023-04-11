@@ -1,0 +1,11 @@
+{
+  "name": "admin-color-scheme",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://plugna@github.com/plugna/acos.git",
+  "author": "Plugna <info@plugna.com>",
+  "license": "MIT",
+  "scripts": {
+    "packit": "sh packer.sh"
+  }
+}

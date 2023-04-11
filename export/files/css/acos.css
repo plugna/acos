@@ -1,0 +1,18 @@
+.wp-picker-container input[type="text"].wp-color-picker {
+    width: 100%;
+}
+.wp-picker-container button .wp-color-result-text {
+    display: none;
+}
+#enable_acos_label{
+    transform: translateY(4px);
+    display: inline-block;
+}
+
+body.acos-enabled .form-table .user-admin-color-wrap{
+    display: none;
+}
+body:not(.acos-enabled) #acos-row .wp-picker-container,
+body:not(.acos-enabled) #acos-row .button{
+    display: none;
+}

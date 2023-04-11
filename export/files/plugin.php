@@ -3,7 +3,7 @@
     Plugin Name: ACOS - Custom Admin Color Scheme
     Plugin URI: https://github.com/plugna/acos
     Description: Adds a custom color scheme to the user profile section below the default admin color schemes.
-    Version: {ACOS_VERSION}
+    Version: 1.2
     Author: Plugna
     Author URI: https://plugna.com/
     License: GPLv2 or later
@@ -16,7 +16,7 @@ class ACOS_Plugin
     private static $version_meta_key = 'acos_version';
     private static $nonce_action = 'acos_nonce';
 
-    private static $version = '{ACOS_VERSION}';
+    private static $version = '1.2';
 
     public function __construct()
     {

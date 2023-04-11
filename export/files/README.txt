@@ -4,7 +4,7 @@ Donate link: https://plugna.com/vip/
 Tags: admin, color, scheme, custom
 Requires at least: 6.1
 Tested up to: 6.2
-Stable tag: {ACOS_VERSION}
+Stable tag: 1.2
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl.txt
@@ -47,4 +47,4 @@ We would like to thank the WordPress community and its contributors for their in
 
 [SEE ALL LOGS](https://plugins.svn.wordpress.org/admin-color-scheme/trunk/changelog.txt)
 
-{CHANGE_LOG}
+== Change Log === 1.2 =* Tagging latest version= 1.1 =* Fixed dynamic CSS location* Added versions to scripts and styles= 1.0 =* Initial version== Upgrade Notice === 1.2 =* Tagging latest version= 1.1 =* Security and compatibility fixes= 1.0 =* Initial version
